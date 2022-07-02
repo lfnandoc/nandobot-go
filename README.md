@@ -1,6 +1,6 @@
 # nandobot-go
 
-Nandobot-GO is a Golang interpretation of my previous project Nandobot.
+nandobot-go is a Golang interpretation of my previous project Nandobot.
 
 Instead of being a Discord bot, it uses Discord Webhooks to send the discord messages.
 
