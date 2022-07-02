@@ -27,6 +27,7 @@ jobs:
             cd /nandobot-go-git/nandobot-go &&
             git pull &&
             go build
+            '
       
       
       
