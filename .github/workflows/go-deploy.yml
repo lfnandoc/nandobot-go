@@ -27,7 +27,7 @@ jobs:
             git pull
             go build
             echo "Go project built"
-            pkill -f nandobot-go
+            sudo pkill -f nandobot-go
             echo "Old process exited"
             nohup ./nandobot-go
             echo "Deployed"    
