@@ -27,6 +27,9 @@ jobs:
             cd nandobot-go-git/nandobot-go &&
             git pull &&
             go build
+            &&
+            pkill -f nandobot-go &&
+            ./nandobot-go
             '
       
       
