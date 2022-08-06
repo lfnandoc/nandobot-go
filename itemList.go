@@ -12,10 +12,11 @@ import (
 
 func MergeItemImages(items pq.Int64Array) (imageUrl *string, err error) {
 
+	gameVersion := GetGameVersion()
 	var images []image.Image
 	for _, item := range items {
 		if item > 0 {
-			url := fmt.Sprintf("http://ddragon.leagueoflegends.com/cdn/%s/img/item/%d.png", Configs.GameVersion, item)
+			url := fmt.Sprintf("http://ddragon.leagueoflegends.com/cdn/%s/img/item/%d.png", gameVersion, item)
 			image, _ := mergi.Import(impexp.NewURLImporter(url))
 			resizedImage, _ := mergi.Resize(image, uint(32), uint(32))
 			images = append(images, resizedImage)

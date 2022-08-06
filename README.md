@@ -15,7 +15,6 @@ New Config.json:
 ```
 {
     "riotApiKey": "RGAPI-xxxxxxxxxxxxxxxxxxxxxxxx", // your riot games api key
-    "gameVersion": "12.12.1", // will add automatic game version detection soon
     "ImgurClientID": "xxx", // imgur client id
     "ImgurClientSecret": "xx", // imgur client secret
     "DiscordWebhook": "https://discordapp.com/api/webhooks/xxxxxxxxxx" // discord webhook

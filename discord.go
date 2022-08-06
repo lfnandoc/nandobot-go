@@ -63,7 +63,7 @@ func GenerateDiscordMessage(matchInfo PlayerMatchInfo) DiscordMessage {
 		Color:       color,
 		Title:       matchInfo.PlayerName,
 		Description: fmt.Sprintf("Jogou de %s e %s!", matchInfo.Champion, matchResult),
-		Thumbnail:   Thumbnail{URL: fmt.Sprintf("http://ddragon.leagueoflegends.com/cdn/%s/img/champion/%s.png", Configs.GameVersion, matchInfo.Champion)},
+		Thumbnail:   Thumbnail{URL: fmt.Sprintf("http://ddragon.leagueoflegends.com/cdn/%s/img/champion/%s.png", GetGameVersion(), matchInfo.Champion)},
 		Timestamp:   matchInfo.EndTime,
 		URL:         fmt.Sprintf("https://blitz.gg/lol/match/br1/%s/%s", url.QueryEscape(matchInfo.PlayerName), strings.Replace(matchInfo.MatchID, "BR1_", "", -1)),
 		Image:       Image{URL: matchInfo.ItemListImageLink},

@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/robfig/cron"
+	"time"
 )
 
 func main() {
