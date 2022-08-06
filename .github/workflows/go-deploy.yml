@@ -29,7 +29,7 @@ jobs:
             echo "Go project built"
             killall -9 nandobot-go
             echo "Old process exited"
-            nohup ./nandobot-go 2000 1>/dev/null 2>/dev/null &
+            nohup ./nandobot-go 1>/dev/null 2>/dev/null &
             echo "Deployed"    
             '
       
