@@ -27,10 +27,8 @@ jobs:
             git pull &&
             go build &&
             pkill -f nandobot &&
-            ./nandobot-go &&
-            disown &&
-            echo "Deployed"          
-
+            sudo nuhup ./nandobot-go & &&
+            echo "Deployed"    
             '
       
       
