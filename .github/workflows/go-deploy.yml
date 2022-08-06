@@ -22,11 +22,15 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '          
+            echo "Deploying..."
             cd nandobot-go-git/nandobot-go &&
             git pull &&
             go build &&
             pkill -f nandobot &&
-            nohup ./nandobot-go &
+            ./nandobot-go &&
+            disown &&
+            echo "Deployed"          
+
             '
       
       
