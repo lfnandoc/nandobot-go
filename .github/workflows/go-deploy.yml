@@ -28,7 +28,7 @@ jobs:
             git pull &&
             go build &&
             pkill -f nandobot-go &&
-            nohup ./nandobot-go
+            nohup ./nandobot-go &
             '
       
       
