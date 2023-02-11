@@ -110,6 +110,20 @@ func GenerateDiscordMessage(matchInfo PlayerMatchInfo) DiscordMessage {
 	return discordMessage
 }
 
+func GenerateCommentDiscordMessage(matchInfo PlayerMatchInfo) DiscordMessage {
+
+	comment, err := GeneratePlayerMatchCommentUsingOpenAi(matchInfo)
+	if err != nil {
+		comment = "Erro ao gerar comentário. Maldita inteligência artificial."
+	}
+
+	discordMessage := DiscordMessage{
+		Content: comment,
+	}
+
+	return discordMessage
+}
+
 func SendDiscordMessageToWebhook(discordMessage DiscordMessage) (err error) {
 
 	data, err := json.Marshal(discordMessage)

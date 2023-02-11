@@ -13,6 +13,7 @@ type Configuration struct {
 	ImgurClientID     string
 	ImgurClientSecret string
 	DiscordWebhook    string
+	OpenAiApiKey      string
 }
 
 func SetupConfiguration() {
