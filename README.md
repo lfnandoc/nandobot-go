@@ -19,5 +19,6 @@ New Config.json:
     "ImgurClientID": "xxx", // imgur client id
     "ImgurClientSecret": "xx", // imgur client secret
     "DiscordWebhook": "https://discordapp.com/api/webhooks/xxxxxxxxxx" // discord webhook
+    "OpenAiApiKey": "xx" // open ai api key
 }
 ```
