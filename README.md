@@ -7,6 +7,7 @@ Instead of being a Discord bot, it uses Discord Webhooks to send the discord mes
 Also new:
 - Generates an image of the player's items stitched together and uploads it to Imgur
 - Has an API for adding new players and getting the last match info
+- Generates a random comment about the player performance using Open AI API
 - Stores all matches on db
 
 ![image](https://user-images.githubusercontent.com/82987034/177017838-a65f8cf0-df37-48ad-85bf-b10f84be0489.png)
@@ -18,5 +19,6 @@ New Config.json:
     "ImgurClientID": "xxx", // imgur client id
     "ImgurClientSecret": "xx", // imgur client secret
     "DiscordWebhook": "https://discordapp.com/api/webhooks/xxxxxxxxxx" // discord webhook
+    "OpenAiApiKey": "xx" // open ai api key
 }
 ```
