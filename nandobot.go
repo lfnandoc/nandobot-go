@@ -11,7 +11,7 @@ func main() {
 	SetupConfiguration()
 	SetupDatabase()
 	c := cron.New()
-	c.AddFunc("@every 5s", func() {
+	c.AddFunc("@every 2m", func() {
 		UpdatePlayerMatches()
 	})
 	c.Start()
