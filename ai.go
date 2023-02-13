@@ -54,7 +54,7 @@ func GeneratePlayerMatchCommentUsingOpenAi(matchInfo PlayerMatchInfo) (result st
 	}
 
 	promptReq := PromptRequest{
-		Model:            "text-davinci-001",
+		Model:            "text-davinci-003",
 		Prompt:           prompt,
 		MaxTokens:        700,
 		Temperature:      0.9,
