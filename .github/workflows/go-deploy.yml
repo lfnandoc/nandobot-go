@@ -41,7 +41,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker pull ${DOCKER_USERNAME}/nandobot-go
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker stop nandobot-go || true 
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker rm nandobot-go || true 
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker run -d --name nandobot-go -v /home/ec2-user/nandobot-go/nandobot.db:/nandobot.db -v /home/ec2-user/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker run -d --name nandobot-go -v /home/ec2-user/nandobot-go/nandobot.db:/app/nandobot.db -v /home/ec2-user/nandobot-go/config.json:/app/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
             
       
       
