@@ -13,24 +13,37 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2 
+      - name: Docker login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build and push
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker build -t $DOCKER_USERNAME/nandobot-go .
+          docker push $DOCKER_USERNAME/nandobot-go   
+
       - name: Deploy in EC2
         env:
             PRIVATE_KEY: ${{ secrets.EC2_KEY  }}
             HOSTNAME : ${{ secrets.EC2_HOST  }}
             USER_NAME : ${{ secrets.EC2_USERNAME  }}
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
             
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '          
             echo "Deploying..."
-            cd nandobot-go-git/nandobot-go
-            git pull
-            go build
-            echo "Go project built"
-            killall -9 nandobot-go
-            echo "Old process exited"
-            nohup ./nandobot-go 1>/dev/null 2>/dev/null &
-            echo "Deployed"    
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker pull $DOCKER_USERNAME/nandobot-go
+            docker stop nandobot-go
+            docker rm nandobot-go
+            docker run -d --name nandobot-go -v ~/nandobot-go/nandobot.db:/nandobot.db -v ~/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
             '
       
       
