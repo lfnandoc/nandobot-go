@@ -39,11 +39,11 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '          
             echo "Deploying..."
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker pull $DOCKER_USERNAME/nandobot-go
-            docker stop nandobot-go
-            docker rm nandobot-go
-            docker run -d --name nandobot-go -v ~/nandobot-go/nandobot.db:/nandobot.db -v ~/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
+            docker stop nandobot-go || exit 0
+            docker rm nandobot-go || exit 0
+            docker run -d --name nandobot-go -v /home/ec2-user/nandobot-go/nandobot.db:/nandobot.db -v /home/ec2-user/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
             '
       
       
