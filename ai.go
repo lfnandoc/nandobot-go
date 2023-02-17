@@ -44,10 +44,10 @@ func GeneratePlayerMatchCommentUsingOpenAi(matchInfo PlayerMatchInfo) (result st
 
 	url := "https://api.openai.com/v1/completions"
 
-	tones := []string{"debochada", "sarcástica", "irônica", "cínica", "satírica", "contente", "encorajadora", "sassy", "interpretando o jogador como um gênio"}
+	tones := []string{"debochada", "sarcástica", "irônica", "cínica", "satírica", "contente", "encorajadora", "sassy", "perversa", "malvada", "em italiano"}
 	randomTone := rand.Intn(len(tones))
 
-	prompt := fmt.Sprintf("Escreva uma pequena avaliação (no pretérito) %s deste jogador considerando sua performance numa partida de League of Legends com estes dados. Nome do jogador: %sCampeão: %s	Kills: %d Deaths: %d Assists: %d Venceu: %t	Modo de jogo: %s Dano total: %d	Cura total: %d", tones[randomTone], matchInfo.PlayerName, matchInfo.Champion, matchInfo.Kills, matchInfo.Deaths, matchInfo.Assists, matchInfo.Win, matchInfo.GameMode, matchInfo.TotalDamageDealt, matchInfo.TotalHeal)
+	prompt := fmt.Sprintf("Escreva uma pequena avaliação %s da performance deste jogador numa partida de League of Legends com estes dados: Nome do jogador: %s, Campeão: %s, Kills: %d, Deaths: %d, Assists: %d, Venceu: %t, Modo de jogo: %s, Dano total: %d, Cura total: %d", tones[randomTone], matchInfo.PlayerName, matchInfo.Champion, matchInfo.Kills, matchInfo.Deaths, matchInfo.Assists, matchInfo.Win, matchInfo.GameMode, matchInfo.TotalDamageDealt, matchInfo.TotalHeal)
 
 	if matchInfo.GameMode != "ARAM" {
 		prompt = fmt.Sprintf("%s Posição: %s", prompt, matchInfo.TeamPosition)
@@ -56,13 +56,13 @@ func GeneratePlayerMatchCommentUsingOpenAi(matchInfo PlayerMatchInfo) (result st
 	promptReq := PromptRequest{
 		Model:            "text-davinci-003",
 		Prompt:           prompt,
-		MaxTokens:        700,
-		Temperature:      0.9,
+		MaxTokens:        1200,
+		Temperature:      1,
 		TopP:             1,
 		N:                1,
 		Stream:           false,
 		Logprobs:         nil,
-		FrequencyPenalty: 0,
+		FrequencyPenalty: 0.5,
 		PresencePenalty:  0,
 	}
 
