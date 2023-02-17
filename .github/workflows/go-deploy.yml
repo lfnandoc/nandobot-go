@@ -36,15 +36,13 @@ jobs:
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
             
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '          
-            echo "Deploying..."
-            echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-            docker pull ${DOCKER_USERNAME}/nandobot-go
-            docker stop nandobot-go || exit 0
-            docker rm nandobot-go || exit 0
-            docker run -d --name nandobot-go -v /home/ec2-user/nandobot-go/nandobot.db:/nandobot.db -v /home/ec2-user/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
-            '
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key         
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker pull ${DOCKER_USERNAME}/nandobot-go
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker stop nandobot-go || exit 0
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker rm nandobot-go || exit 0
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} docker run -d --name nandobot-go -v /home/ec2-user/nandobot-go/nandobot.db:/nandobot.db -v /home/ec2-user/nandobot-go/config.json:/config.json -p 8080:8080 $DOCKER_USERNAME/nandobot-go   
+            
       
       
       
