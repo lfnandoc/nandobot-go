@@ -1,17 +1,19 @@
-# Use the official Golang image as the base image
-FROM golang:1.20.1-alpine
+FROM alpine
 
-# Set the working directory to /app
+RUN apk --update upgrade
+RUN apk add sqlite
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+
+RUN apk add --no-cache go
+
+RUN rm -rf /var/cache/apk/*
+
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
 COPY . .
 
-# Build the Go app
-RUN go build -o nandobot-go .
+RUN go build -o nandobot-go . 
 
-# Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Run the executable
 CMD ["./nandobot-go"]

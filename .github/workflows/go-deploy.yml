@@ -23,7 +23,6 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          CGO_ENABLED: 1
         run: |
           docker build -t $DOCKER_USERNAME/nandobot-go .
           docker push $DOCKER_USERNAME/nandobot-go   
