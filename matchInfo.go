@@ -43,7 +43,7 @@ func GetLastMatchInfo(id string) (matchInfo *PlayerMatchInfo, err error) {
 	playerMatch := PlayerMatchInfo{
 		MatchID:          *matchId,
 		PlayerID:         player.ID,
-		PlayerName:       player.Name,
+		PlayerName:       playerData.SummonerName,
 		Champion:         playerData.ChampionName,
 		Kills:            playerData.Kills,
 		Deaths:           playerData.Deaths,

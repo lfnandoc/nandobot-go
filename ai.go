@@ -14,56 +14,52 @@ type CompletionResponse struct {
 	Object  string `json:"object"`
 	Created int    `json:"created"`
 	Model   string `json:"model"`
-	Choices []struct {
-		Text         string `json:"text"`
-		Index        int    `json:"index"`
-		Logprobs     string `json:"logprobs"`
-		FinishReason string `json:"finish_reason"`
-	} `json:"choices"`
-	Usage struct {
+	Usage   struct {
 		PromptTokens     int `json:"prompt_tokens"`
 		CompletionTokens int `json:"completion_tokens"`
 		TotalTokens      int `json:"total_tokens"`
 	} `json:"usage"`
+	Choices []struct {
+		Message struct {
+			Role    string `json:"role"`
+			Content string `json:"content"`
+		} `json:"message"`
+		FinishReason string `json:"finish_reason"`
+		Index        int    `json:"index"`
+	} `json:"choices"`
 }
 
-type PromptRequest struct {
-	Model            string      `json:"model"`
-	Prompt           string      `json:"prompt"`
-	MaxTokens        int         `json:"max_tokens"`
-	Temperature      float32     `json:"temperature"`
-	TopP             float32     `json:"top_p"`
-	N                int         `json:"n"`
-	Stream           bool        `json:"stream"`
-	Logprobs         interface{} `json:"logprobs"`
-	FrequencyPenalty float32     `json:"frequency_penalty"`
-	PresencePenalty  float32     `json:"presence_penalty"`
+type Message struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
+type GptRequest struct {
+	Model    string    `json:"model"`
+	Messages []Message `json:"messages"`
 }
 
 func GeneratePlayerMatchCommentUsingOpenAi(matchInfo PlayerMatchInfo) (result string, err error) {
 
-	url := "https://api.openai.com/v1/completions"
+	url := "https://api.openai.com/v1/chat/completions"
 
-	tones := []string{"debochada", "sarcástica", "irônica", "cínica", "satírica", "contente", "encorajadora", "sassy", "perversa", "malvada", "em italiano"}
+	tones := []string{"debochada", "sarcástica", "irônica", "encorajadora", "perversa", "malvada", "inspiracional", "desmotivacional", "cruel"}
 	randomTone := rand.Intn(len(tones))
 
-	prompt := fmt.Sprintf("Escreva uma pequena avaliação %s da performance deste jogador numa partida de League of Legends com estes dados: Nome do jogador: %s, Campeão: %s, Kills: %d, Deaths: %d, Assists: %d, Venceu: %t, Modo de jogo: %s, Dano total: %d, Cura total: %d", tones[randomTone], matchInfo.PlayerName, matchInfo.Champion, matchInfo.Kills, matchInfo.Deaths, matchInfo.Assists, matchInfo.Win, matchInfo.GameMode, matchInfo.TotalDamageDealt, matchInfo.TotalHeal)
+	prompt := fmt.Sprintf("Escreva uma pequena história %s da performance deste jogador numa partida de League of Legends com estes dados: Nome do jogador: %s, Campeão: %s, Kills: %d, Deaths: %d, Assists: %d, Venceu: %t, Modo de jogo: %s, Dano total: %d, Cura total: %d", tones[randomTone], matchInfo.PlayerName, matchInfo.Champion, matchInfo.Kills, matchInfo.Deaths, matchInfo.Assists, matchInfo.Win, matchInfo.GameMode, matchInfo.TotalDamageDealt, matchInfo.TotalHeal)
 
 	if matchInfo.GameMode != "ARAM" {
 		prompt = fmt.Sprintf("%s Posição: %s", prompt, matchInfo.TeamPosition)
 	}
 
-	promptReq := PromptRequest{
-		Model:            "text-davinci-003",
-		Prompt:           prompt,
-		MaxTokens:        1200,
-		Temperature:      1,
-		TopP:             1,
-		N:                1,
-		Stream:           false,
-		Logprobs:         nil,
-		FrequencyPenalty: 0.5,
-		PresencePenalty:  0,
+	promptReq := GptRequest{
+		Model: "gpt-3.5-turbo",
+		Messages: []Message{
+			{
+				Role:    "user",
+				Content: prompt,
+			},
+		},
 	}
 
 	jsonReq, err := json.Marshal(promptReq)
@@ -88,5 +84,5 @@ func GeneratePlayerMatchCommentUsingOpenAi(matchInfo PlayerMatchInfo) (result st
 	var responseObject CompletionResponse
 	json.Unmarshal(response_body, &responseObject)
 
-	return responseObject.Choices[0].Text, nil
+	return responseObject.Choices[0].Message.Content, nil
 }

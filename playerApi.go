@@ -11,7 +11,8 @@ import (
 func SetupApi() {
 	r := gin.Default()
 	r.POST("/player", AddPlayer)
-	r.GET("/player/:id", GetLastMatchInfoOfPlayer)
+	r.GET("/playermatch/:id", GetLastMatchInfoOfPlayer)
+	r.DELETE("/playermatch/:id", DeleteLastMatchInfoOfPlayer)
 	r.Run()
 }
 
@@ -45,6 +46,20 @@ func AddPlayer(c *gin.Context) {
 	player.UserId = *uuid
 	DB.Create(&player)
 	c.IndentedJSON(http.StatusOK, player)
+}
+
+func DeleteLastMatchInfoOfPlayer(c *gin.Context) {
+	id := c.Param("id")
+	matchInfo, err := GetLastMatchInfo(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	DB.Delete(&matchInfo)
+	fmt.Println("Deleted last match info of player " + fmt.Sprint(id))
 }
 
 type SummonerResponse struct {

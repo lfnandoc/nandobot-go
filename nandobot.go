@@ -33,22 +33,26 @@ func UpdatePlayerMatches() {
 		if !matchInfo.MessageSent {
 			discordMessage := GenerateDiscordMessage(*matchInfo)
 
+			// Log message sent
+			fmt.Println("Sending message to discord - Match ID: " + matchInfo.MatchID + " - Player ID: " + fmt.Sprint(matchInfo.PlayerID) + " - Player Name: " + matchInfo.PlayerName)
+
 			// Randomly send a comment
 			rand.Seed(time.Now().UnixNano())
 			sendComment := rand.Intn(100) < 25
-			var commentMessage DiscordMessage
+			var commentMessage string
+			var commentError error
 
 			if sendComment {
-				commentMessage = GenerateCommentDiscordMessage(*matchInfo)
+				commentMessage, commentError = GeneratePlayerMatchCommentUsingOpenAi(*matchInfo)
+				if commentError == nil {
+					discordMessage.Embeds[0].Footer = Footer{Text: commentMessage}
+				}
 			}
 
 			err = SendDiscordMessageToWebhook(discordMessage)
 			if err == nil {
 				matchInfo.MessageSent = true
 				DB.Save(&matchInfo)
-				if sendComment {
-					SendDiscordMessageToWebhook(commentMessage)
-				}
 			}
 		}
 	}

@@ -28,9 +28,12 @@ type Embed struct {
 	} `json:"author,omitempty"`
 	Image     Image     `json:"image"`
 	Thumbnail Thumbnail `json:"thumbnail"`
-	Footer    struct {
-	} `json:"footer,omitempty"`
-	Fields []Field `json:"fields"`
+	Footer    Footer    `json:"footer,omitempty"`
+	Fields    []Field   `json:"fields"`
+}
+
+type Footer struct {
+	Text string `json:"text"`
 }
 
 type Image struct {
